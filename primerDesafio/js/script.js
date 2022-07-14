@@ -107,21 +107,12 @@ if (sigoProceso == false){
                         case 0:
                             break;                                    
                         case 1:
-                            // saldo -= importeTarjeta;
-                            // totalTarjeta += importeTarjeta;
-                            // leyendaCuotas = leyendaCuotas + '\nElegiste pagar: $' + importeTarjeta + ' en ' + cantCuotas + ' cuota';
                             procesoCuotas(importeTarjeta, 1)
                             break;                                    
                         case 3:                                    
-                            // saldo -= importeTarjeta;
-                            // totalTarjeta += importeTarjeta;
-                            // leyendaCuotas = leyendaCuotas + '\nElegiste pagar: $' + importeTarjeta + ' en ' + cantCuotas + ' cuotas\nEn tu próximo Resumen te va a aparecer un importe de $'+ (importeTarjeta*coef3Cuotas);
                             procesoCuotas(importeTarjeta, 3)
                             break;                                    
                         case 6:                                   
-                            // saldo -= importeTarjeta;
-                            // totalTarjeta += importeTarjeta;
-                            // leyendaCuotas = leyendaCuotas + '\nElegiste pagar: $' + importeTarjeta + ' en ' + cantCuotas + ' cuotas\nEn tu próximo Resumen te va a aparecer un importe de $'+ (importeTarjeta*coef6Cuotas);
                             procesoCuotas(importeTarjeta, 6)
                             break;                                    
                         }
