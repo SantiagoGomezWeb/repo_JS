@@ -1,0 +1,14 @@
+[
+  {
+    "precio": 500,
+    "id": 1,
+    "title": "Cafe",
+    "thumbnailUrl": "https://picsum.photos/id/0/600"
+  },
+  {
+    "userId": 1,
+    "id": 2,
+    "title": "Pizza",
+    "thumbnailUrl": "https://picsum.photos/id/10/600"
+  }
+]
