@@ -68,9 +68,10 @@ copiaFamilia.reverse();
 console.log(copiaFamilia);
 
 const libroHarryPotter = [
-    {id:100}, titulo:'y la Piedra Filosofal', fecha: 1997},
-    
+    {id:100, titulo:'y la Piedra Filosofal', fecha: 1997}
 ]
+
+
 
 
 

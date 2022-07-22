@@ -8,7 +8,7 @@ const productosCatalogo = [
     },
     {
         id:'135H003', 
-        descri: 'C 10 Pick Up', 
+        descri: 'C-10 Pick Up', 
         precioVenta:4470.59,
         foto:'./images/135H003.png'
     },

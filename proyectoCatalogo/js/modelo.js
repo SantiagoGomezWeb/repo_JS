@@ -42,10 +42,14 @@ function dibujarProductos() {
         // Body
         const renglonBody = document.createElement('div');
         renglonBody.classList.add('card-body');
-        // Titulo
-        const renglonTitulo = document.createElement('h5');
+        // Titulo - Codigo
+        const renglonTitulo = document.createElement('h4');
         renglonTitulo.classList.add('card-title');
-        renglonTitulo.textContent = info.nombre;
+        renglonTitulo.textContent = info.codigo;
+        // descri del Articulo
+        const renglonDescri = document.createElement('h5');
+        renglonDescri.classList.add('card-subtitle');
+        renglonDescri.textContent = info.nombre;
         // foto
         const renglonFoto = document.createElement('img');
         renglonFoto.classList.add('img-flucodigo');
@@ -57,12 +61,14 @@ function dibujarProductos() {
         // Boton 
         const renglonBoton = document.createElement('button');
         renglonBoton.classList.add('btn', 'btn-primary');
-        renglonBoton.textContent = '+';
+        renglonBoton.textContent = 'Añadir al Carrito';
+
         renglonBoton.setAttribute('marcador', info.codigo);
-        renglonBoton.addEventListener('click', anyadirProductoAlCarrito);
-        // Insertamos
+        renglonBoton.addEventListener('click', agregarArticuloAlCarrito);
+
         renglonBody.appendChild(renglonFoto);
         renglonBody.appendChild(renglonTitulo);
+        renglonBody.appendChild(renglonDescri);
         renglonBody.appendChild(renglonPrecio);
         renglonBody.appendChild(renglonBoton);
         renglon.appendChild(renglonBody);
@@ -70,7 +76,7 @@ function dibujarProductos() {
     });
 }
 
-function anyadirProductoAlCarrito(evento) {
+function agregarArticuloAlCarrito(evento) {
     carrito.push(evento.target.getAttribute('marcador'))
     dibujarCarrito();
 }
