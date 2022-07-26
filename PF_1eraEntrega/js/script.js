@@ -1,25 +1,4 @@
 // Variables
-const productosCatalogo = [
-    {
-        codigo: '135H002',
-        nombre: 'Opel K-180',
-        precio: 1890,
-        foto: './images/135H002.png'
-    },
-    {
-        codigo: '136H003',
-        nombre: 'C-10 Pick Up',
-        precio: 89491,
-        foto: './images/135H003.png'
-    },
-    {
-        codigo: '137H004',
-        nombre: 'Chevette 1.6 Junior',
-        precio: 2251,
-        foto: './images/135H004.png'
-    }
-];
-
 let carrito = [];
 console.log(carrito);
 
@@ -73,18 +52,15 @@ function pusheoArticulo(articuloIngresado, can){
             });
             break;
         default:
-            alert('Entrada inválida');
+            alert('Articulo Inexistente');
             break;
     };
 }
     
 function agregarArticuloAlCarrito(articuloIngresado) {
     if (!buscoArticuloenCarrito(articuloIngresado)){
-        // alert('Articulo no encontrado en el Carrito');
         pusheoArticulo(articuloIngresado, 1);
     } else {
-        // alert('Articulo encontrado en el Carrito');
-        // le sumo 1 a la cantidad
         cantiFinal = 0;
         carrito.forEach(elemento => {
             if (buscoArticuloporCodigo(articuloIngresado)==elemento.codigo){
@@ -126,18 +102,18 @@ function calculoTotal() {
 //interactuo con el usuario
 let meVoy = false;
 do{
-    let entrada =  parseInt(prompt('Que queres hacer?\n1.-Agregar Articulo al Carrito\n2.-Quitar un Articulo\n3.-Ir a Pagar\n0.- Cancelar Compra'));
+    let entrada =  parseInt(prompt('Que queres hacer?\n1.- Agregar Articulo al Carrito\n2.- Quitar un Articulo\n3.- Ir a Pagar\n0.- Cancelar Compra'));
     switch (entrada) {
         case 0:
             //me voy
-            alert('Compra Cancelada\nVolvé cuando quieras !!!');
+            alert('Compra Cancelada\nTe esperamos pronto !!!');
             carrito = [];
             console.log(carrito);
             meVoy = true;
             break;
         case 1:
             // agregar articulo
-            let articuloIngresado = prompt('Ingregá el Código de Articulo a AGREGAR: \n(0) para Cancelar');        
+            let articuloIngresado = prompt('Ingregá el Código de Articulo a AGREGAR: \n\nArticulos con Stock: 135, 136, 137\n(0) para Cancelar');        
             agregarArticuloAlCarrito(articuloIngresado);
             if (carrito.length > 0) {
                 alert(muestroCarrito(carrito)); 
@@ -160,10 +136,10 @@ do{
                 if (carrito.length > 0) {
                     alert(muestroCarrito(carrito)); 
                     alert('Gracias por tu Compra');
+                    meVoy = true;
                 } else {
-                    alert('No agregaste nada a tu carrito.\nVolvé cuando quieras!');
+                    alert('No agregaste nada a tu carrito.');
                 }          
-                meVoy = true;
                 break;
         default:
             alert('Entrada inválida');
