@@ -36,57 +36,67 @@ const DOMbotonVaciar = document.querySelector('#boton-vaciar');
 // Funciones
 function dibujarProductos() {
     productosCatalogo.forEach((info) => {
-        // Estructura
+        // div para la card
         const renglon = document.createElement('div');
-        renglon.classList.add('card', 'col-sm-4');
-        // Body
-        const renglonBody = document.createElement('div');
-        renglonBody.classList.add('card-body');
+        renglon.classList.add('card');
+
+        // cuerpo
+        const tarjeta = document.createElement('div');
+        tarjeta.classList.add('card-body');
+
         // Titulo - Codigo
         const renglonTitulo = document.createElement('h4');
         renglonTitulo.classList.add('card-title');
         renglonTitulo.textContent = info.codigo;
+
         // descri del Articulo
         const renglonDescri = document.createElement('h5');
         renglonDescri.classList.add('card-subtitle');
         renglonDescri.textContent = info.nombre;
+
         // foto
         const renglonFoto = document.createElement('img');
-        renglonFoto.classList.add('img-flucodigo');
+        // renglonFoto.classList.add('img-flucodigo');
+        renglonFoto.classList.add('img');
         renglonFoto.setAttribute('src', info.foto);
+
         // Precio
         const renglonPrecio = document.createElement('p');
         renglonPrecio.classList.add('card-text');
         renglonPrecio.textContent = '$'+`${info.precio}`;
+
         // Boton 
-        const renglonBoton = document.createElement('button');
-        renglonBoton.classList.add('btn', 'btn-primary');
-        renglonBoton.textContent = 'Añadir al Carrito';
+        const BotonCard = document.createElement('button');
+        BotonCard.classList.add('btn', 'btn-primary');
+        BotonCard.textContent = 'Comprar';
 
-        renglonBoton.setAttribute('marcador', info.codigo);
-        renglonBoton.addEventListener('click', agregarArticuloAlCarrito);
+        BotonCard.setAttribute('identificador', info.codigo);
+        BotonCard.addEventListener('click', agregarArticuloAlCarrito);
 
-        renglonBody.appendChild(renglonFoto);
-        renglonBody.appendChild(renglonTitulo);
-        renglonBody.appendChild(renglonDescri);
-        renglonBody.appendChild(renglonPrecio);
-        renglonBody.appendChild(renglonBoton);
-        renglon.appendChild(renglonBody);
+
+        tarjeta.appendChild(renglonFoto);
+        tarjeta.appendChild(renglonTitulo);
+        tarjeta.appendChild(renglonDescri);
+        tarjeta.appendChild(renglonPrecio);
+        tarjeta.appendChild(BotonCard);
+
+        renglon.appendChild(tarjeta);
+
         DOMitems.appendChild(renglon);
     });
 }
 
 function agregarArticuloAlCarrito(evento) {
-    carrito.push(evento.target.getAttribute('marcador'))
+    carrito.push(evento.target.getAttribute('identificador'))
     dibujarCarrito();
 }
 
 function dibujarCarrito() {
     DOMcarrito.textContent = '';
 
-    const carritoSinDuplicados = [...new Set(carrito)];
+    const carritoFinal = [...new Set(carrito)];
 
-    carritoSinDuplicados.forEach((item) => {
+    carritoFinal.forEach((item) => {
         const miItem = productosCatalogo.filter((itemBaseDatos) => {
             return itemBaseDatos.codigo === item;
         });
@@ -96,17 +106,20 @@ function dibujarCarrito() {
         }, 0);
 
         const renglon = document.createElement('li');
-        renglon.classList.add('list-group-item', 'text-right', 'mx-2');
-        // renglon.textContent = `${numeroUnidadesItem} x ${miItem[0].nombre} - ${miItem[0].precio}`;
+        renglon.classList.add('list-group-item','text-right');
+        
         renglon.textContent = `${numeroUnidadesItem} x ${miItem[0].nombre} - ` + '$' + `${miItem[0].precio}`;
 
-        const miBoton = document.createElement('button');
-        miBoton.classList.add('btn', 'btn-danger', 'mx-5');
-        miBoton.textContent = 'X';
-        miBoton.style.marginLeft = '1rem';
-        miBoton.dataset.item = item;
-        miBoton.addEventListener('click', borrarItemCarrito);
-        renglon.appendChild(miBoton);
+        const botonBorrar = document.createElement('button');
+
+        botonBorrar.classList.add('btn', 'btn-danger');
+        botonBorrar.textContent = 'Borrar';
+        botonBorrar.style.marginLeft = '20px';
+        botonBorrar.dataset.item = item;
+
+        botonBorrar.addEventListener('click', borrarItemCarrito);
+
+        renglon.appendChild(botonBorrar);
         DOMcarrito.appendChild(renglon);
     });
     DOMtotal.textContent =  '$' + calcularTotal();
