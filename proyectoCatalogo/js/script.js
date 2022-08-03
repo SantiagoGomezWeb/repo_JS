@@ -1,29 +1,30 @@
 // Variables
 const productosCatalogo = [
     {
-        id:'135H002', 
-        descri: 'Opel K-180', 
-        precioVenta:4470.59,    
-        foto:'./images/135H002.png'
+        codigo: '135H002',
+        nombre: 'Toyota Corolla S-EG',
+        precio: 1890,
+        foto: './images/135H002.png'
     },
     {
-        id:'135H003', 
-        descri: 'C-10 Pick Up', 
-        precioVenta:4470.59,
-        foto:'./images/135H003.png'
+        codigo: '135H003',
+        nombre: 'Chevrolet C-10 Pick Up',
+        precio: 9491,
+        foto: './images/135H003.png'
     },
     {
-        id:'135H004', 
-        descri: 'Chevette 1.6 Junior',
-        precioVenta:5013.68,
-        foto:'./images/135H004.png'
-        },
-    {
-        id:'135H011', 
-        descri: 'D-20 Mot MAXION', 
-        precioVenta:6323.37,
-        foto:'./images/135H011.png'
+        codigo: '135H004',
+        nombre: 'Chevette 1.6 Junior',
+        precio: 2251,
+        foto: './images/135H004.png'
     },
+    {
+        codigo: '135H010',
+        nombre: 'Peugeot 208 1.6',
+        precio: 1510,
+        foto: './images/135H010.png'
+    }
+
 ];
 
 let carrito = [];
@@ -33,81 +34,95 @@ const DOMtotal = document.querySelector('#total');
 const DOMbotonVaciar = document.querySelector('#boton-vaciar');
 
 // Funciones
-function mostrarArticulos() {
+function dibujarProductos() {
     productosCatalogo.forEach((info) => {
-        // DIV
-        const elemento = document.createElement('div');
-        elemento.classList.add('card', 'col-sm-4');
-        // Body
-        const elementoCardBody = document.createElement('div');
-        elementoCardBody.classList.add('card-body');
-        // Titulo
-        const elementoTitulo = document.createElement('h4');
-        elementoTitulo.classList.add('card-title');
-        elementoTitulo.textContent = info.descri;
-        // Foto
-        const elementoFoto = document.createElement('img');
-        elementoFoto.classList.add('img-fluid');
-        elementoFoto.setAttribute('src', info.foto);
-        // Precio Venta
-        const elementoPrecioVenta = document.createElement('p');
-        elementoPrecioVenta.classList.add('card-text');
-        elementoPrecioVenta.textContent = `${info.precioVenta}`;
+        // div para la card
+        const renglon = document.createElement('div');
+        renglon.classList.add('card');
+
+        // cuerpo
+        const tarjeta = document.createElement('div');
+        tarjeta.classList.add('card-body');
+
+        // Titulo - Codigo
+        const renglonTitulo = document.createElement('h4');
+        renglonTitulo.classList.add('card-title');
+        renglonTitulo.textContent = info.codigo;
+
+        // descri del Articulo
+        const renglonDescri = document.createElement('h5');
+        renglonDescri.classList.add('card-subtitle');
+        renglonDescri.textContent = info.nombre;
+
+        // foto
+        const renglonFoto = document.createElement('img');
+        // renglonFoto.classList.add('img-flucodigo');
+        renglonFoto.classList.add('img');
+        renglonFoto.setAttribute('src', info.foto);
+
+        // Precio
+        const renglonPrecio = document.createElement('p');
+        renglonPrecio.classList.add('card-text');
+        renglonPrecio.textContent = '$'+`${info.precio}`;
+
         // Boton 
-        const elementoBoton = document.createElement('button');
-        elementoBoton.classList.add('btn', 'btn-primary');
-        elementoBoton.textContent = '+';
-        elementoBoton.setAttribute('marcador', info.id);
-        elementoBoton.addEventListener('click', agregarArticuloAlCarrito);
+        const BotonCard = document.createElement('button');
+        BotonCard.classList.add('btn', 'btn-primary');
+        BotonCard.textContent = 'Comprar';
 
-        elementoCardBody.appendChild(elementoFoto);
-        elementoCardBody.appendChild(elementoTitulo);
-        elementoCardBody.appendChild(elementoPrecioVenta);
-        elementoCardBody.appendChild(elementoBoton);
+        BotonCard.setAttribute('identificador', info.codigo);
+        BotonCard.addEventListener('click', agregarArticuloAlCarrito);
 
-        elemento.appendChild(elementoCardBody);
-        DOMitems.appendChild(elemento);
+
+        tarjeta.appendChild(renglonFoto);
+        tarjeta.appendChild(renglonTitulo);
+        tarjeta.appendChild(renglonDescri);
+        tarjeta.appendChild(renglonPrecio);
+        tarjeta.appendChild(BotonCard);
+
+        renglon.appendChild(tarjeta);
+        //escribo en el DOM
+        DOMitems.appendChild(renglon);
     });
 }
 
 function agregarArticuloAlCarrito(evento) {
-    carrito.push(evento.target.getAttribute('marcador'))
-    mostrarCarrito();
+    carrito.push(evento.target.getAttribute('identificador'))
+    dibujarCarrito();
 }
 
-function mostrarCarrito() {
+function dibujarCarrito() {
     DOMcarrito.textContent = '';
 
-    const carritoSinDuplicados = [...new Set(carrito)];
+    const carritoFinal = [...new Set(carrito)];
 
-    carritoSinDuplicados.forEach((item) => {
-        const miItem = productosCatalogo.filter((itemBaseDatos) => {
-            return itemBaseDatos.id === parseInt(item);
+    carritoFinal.forEach((item) => {
+        const renglonCarrito = productosCatalogo.filter((productosCatalogo) => {
+            return productosCatalogo.codigo === item;
         });
-        
-        
+
         const numeroUnidadesItem = carrito.reduce((total, itemId) => {
             return itemId === item ? total += 1 : total;
         }, 0);
 
+        const renglon = document.createElement('li');
+        renglon.classList.add('list-group-item','text-right');
         
-        const elemento = document.createElement('li');
-        elemento.classList.add('list-group-item', 'text-right', 'mx-2');
-        elemento.textContent = `${numeroUnidadesItem} x ${miItem[0].descri} - ${miItem[0].precioVenta}`;
-        
-        
-        const miBoton = document.createElement('button');
-        miBoton.classList.add('btn', 'btn-danger', 'mx-5');
-        miBoton.textContent = 'X';
-        miBoton.style.marginLeft = '1rem';
-        miBoton.dataset.item = item;
-        miBoton.addEventListener('click', borrarItemCarrito);
-        
-        elemento.appendChild(miBoton);
-        DOMcarrito.appendChild(elemento);
+        renglon.textContent = `${numeroUnidadesItem} x ${renglonCarrito[0].nombre} - ` + '$' + `${renglonCarrito[0].precio}`;
+
+        const botonBorrar = document.createElement('button');
+
+        botonBorrar.classList.add('btn', 'btn-danger');
+        botonBorrar.textContent = 'Borrar';
+        botonBorrar.style.marginLeft = '20px';
+        botonBorrar.dataset.item = item;
+
+        botonBorrar.addEventListener('click', borrarItemCarrito);
+
+        renglon.appendChild(botonBorrar);
+        DOMcarrito.appendChild(renglon);
     });
-    // Muestro el precio total en el HTML
-    DOMtotal.textContent = calcularTotal();
+    DOMtotal.textContent =  '$' + calcularTotal();
 }
 
 function borrarItemCarrito(evento) {
@@ -115,25 +130,27 @@ function borrarItemCarrito(evento) {
     carrito = carrito.filter((carritoId) => {
         return carritoId !== id;
     });
-    mostrarCarrito();
+    dibujarCarrito();
 }
 
 function calcularTotal() {
     return carrito.reduce((total, item) => {
-        const miItem = productosCatalogo.filter((itemBaseDatos) => {
-            return itemBaseDatos.id === parseInt(item);
+        const renglonCarrito = productosCatalogo.filter((productosCatalogo) => {
+            return productosCatalogo.codigo === item;
         });
-        return total + miItem[0].precio;
-    }, 0).toFixed(2);
+        total = total + renglonCarrito[0].precio;
+        return total 
+    }, 0).toFixed();
 }
 
 function vaciarCarrito() {
     carrito = [];
-    mostrarCarrito();
+    dibujarCarrito();
 }
 
+// Eventos
 DOMbotonVaciar.addEventListener('click', vaciarCarrito);
 
 // Inicio
-mostrarArticulos();
-mostrarCarrito();
+dibujarProductos();
+dibujarCarrito();

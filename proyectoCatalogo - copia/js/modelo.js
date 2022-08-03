@@ -97,8 +97,8 @@ function dibujarCarrito() {
     const carritoFinal = [...new Set(carrito)];
 
     carritoFinal.forEach((item) => {
-        const miItem = productosCatalogo.filter((itemBaseDatos) => {
-            return itemBaseDatos.codigo === item;
+        const renglonCarrito = productosCatalogo.filter((productosCatalogo) => {
+            return productosCatalogo.codigo === item;
         });
 
         const numeroUnidadesItem = carrito.reduce((total, itemId) => {
@@ -108,7 +108,7 @@ function dibujarCarrito() {
         const renglon = document.createElement('li');
         renglon.classList.add('list-group-item','text-right');
         
-        renglon.textContent = `${numeroUnidadesItem} x ${miItem[0].nombre} - ` + '$' + `${miItem[0].precio}`;
+        renglon.textContent = `${numeroUnidadesItem} x ${renglonCarrito[0].nombre} - ` + '$' + `${renglonCarrito[0].precio}`;
 
         const botonBorrar = document.createElement('button');
 
@@ -135,10 +135,11 @@ function borrarItemCarrito(evento) {
 
 function calcularTotal() {
     return carrito.reduce((total, item) => {
-        const miItem = productosCatalogo.filter((itemBaseDatos) => {
-            return itemBaseDatos.codigo === item;
+        const renglonCarrito = productosCatalogo.filter((productosCatalogo) => {
+            return productosCatalogo.codigo === item;
         });
-        return total + miItem[0].precio;
+        total = total + renglonCarrito[0].precio;
+        return total 
     }, 0).toFixed();
 }
 
