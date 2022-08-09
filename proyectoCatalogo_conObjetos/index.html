@@ -23,15 +23,24 @@
                 </main>
             </div>
             <!-- div para el carrito -->
-            <div class="row">
+
+            <section class="col-md-6 mx-auto my-auto d-block p-3"> 
+                <h2>Tu Pedido</h2>
+                <ul id="carrito" class="list-group">
+                </ul>
+                <p class="text-right" id="total_abajo">Total: <span id="total"></span></p>
+                <button id="boton-vaciar" class="btn btn-danger">Vaciar Carrito</button>
+            </section>
+
+            <!-- <div class="row">
                 <div>
                     <h2>Carrito</h2>
                     <ul id="carrito" class="list-group">
                     </ul>
-                    <p class="text-right">Total: <span id="total"></span></p>
+                    <p class="text-right" id="total_abajo">Total: <span id="total"></span></p>
                     <button id="boton-vaciar" class="btn btn-danger">Vaciar Carrito</button>
                 </div>
-            </div>
+            </div> -->
         </div>        
     </main>
 
@@ -42,10 +51,9 @@
     integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
     crossorigin="anonymous">
     </script>
-    
-    <!-- <script src="./js/script.js"></script> -->
-    <script src="./js/modelo.js"></script>
 
+    <script src="./js/productos.js"></script>
+    <script src="./js/script.js"></script>
 </body>
 
 </html>

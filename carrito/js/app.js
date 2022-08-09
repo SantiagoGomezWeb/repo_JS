@@ -44,7 +44,7 @@ const eventoBotones = (data) => {
         const [producto] = data.filter(
             (item) => item.id === parseInt(btn.dataset.id)
         );
-        // console.log(producto)
+        // console.log(producto
         
         // creamos un producto para el carrito
         const productoCarrito = {

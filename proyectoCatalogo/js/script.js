@@ -1,37 +1,18 @@
 // Variables
-const productosCatalogo = [
-    {
-        codigo: '135H002',
-        nombre: 'Toyota Corolla S-EG',
-        precio: 1890,
-        foto: './images/135H002.png'
-    },
-    {
-        codigo: '135H003',
-        nombre: 'Chevrolet C-10 Pick Up',
-        precio: 9491,
-        foto: './images/135H003.png'
-    },
-    {
-        codigo: '135H004',
-        nombre: 'Chevette 1.6 Junior',
-        precio: 2251,
-        foto: './images/135H004.png'
-    },
-    {
-        codigo: '135H010',
-        nombre: 'Peugeot 208 1.6',
-        precio: 1510,
-        foto: './images/135H010.png'
-    }
-
-];
-
 let carrito = [];
 const DOMitems = document.querySelector('#items');
 const DOMcarrito = document.querySelector('#carrito');
 const DOMtotal = document.querySelector('#total');
 const DOMbotonVaciar = document.querySelector('#boton-vaciar');
+
+
+document.addEventListener("DOMContentLoaded", () => {
+    if (localStorage.getItem('carrito')) {
+        carrito = JSON.parse(localStorage.getItem('carrito'));
+        dibujarCarrito();
+    }
+  });
+
 
 // Funciones
 function dibujarProductos() {
@@ -93,7 +74,7 @@ function agregarArticuloAlCarrito(evento) {
 
 function dibujarCarrito() {
     DOMcarrito.textContent = '';
-
+    //desafio clase 12:
     const carritoFinal = [...new Set(carrito)];
 
     carritoFinal.forEach((item) => {
@@ -102,6 +83,7 @@ function dibujarCarrito() {
         });
 
         const numeroUnidadesItem = carrito.reduce((total, itemId) => {
+            //desafio clase 12
             return itemId === item ? total += 1 : total;
         }, 0);
 
@@ -121,6 +103,8 @@ function dibujarCarrito() {
 
         renglon.appendChild(botonBorrar);
         DOMcarrito.appendChild(renglon);
+
+        localStorage.setItem('carrito', JSON.stringify(carrito));    
     });
     DOMtotal.textContent =  '$' + calcularTotal();
 }
@@ -145,6 +129,7 @@ function calcularTotal() {
 
 function vaciarCarrito() {
     carrito = [];
+    localStorage.removeItem('carrito');
     dibujarCarrito();
 }
 

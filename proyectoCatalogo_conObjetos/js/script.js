@@ -1,37 +1,18 @@
 // Variables
-const productosCatalogo = [
-    {
-        codigo: '135H002',
-        nombre: 'Opel K-180',
-        precio: 1890,
-        foto: './images/135H002.png'
-    },
-    {
-        codigo: '135H003',
-        nombre: 'C-10 Pick Up',
-        precio: 89491,
-        foto: './images/135H003.png'
-    },
-    {
-        codigo: '135H004',
-        nombre: 'Chevette 1.6 Junior',
-        precio: 2251,
-        foto: './images/135H004.png'
-    },
-    {
-        codigo: '135H010',
-        nombre: 'D-20 Mot MAXION',
-        precio: 1510,
-        foto: './images/135H010.png'
-    }
-
-];
-
 let carrito = [];
 const DOMitems = document.querySelector('#items');
 const DOMcarrito = document.querySelector('#carrito');
 const DOMtotal = document.querySelector('#total');
 const DOMbotonVaciar = document.querySelector('#boton-vaciar');
+
+
+document.addEventListener("DOMContentLoaded", () => {
+    if (localStorage.getItem('carrito')) {
+        carrito = JSON.parse(localStorage.getItem('carrito'));
+        dibujarCarrito();
+    }
+  });
+
 
 // Funciones
 function dibujarProductos() {
@@ -81,7 +62,7 @@ function dibujarProductos() {
         tarjeta.appendChild(BotonCard);
 
         renglon.appendChild(tarjeta);
-
+        //escribo en el DOM
         DOMitems.appendChild(renglon);
     });
 }
@@ -121,6 +102,8 @@ function dibujarCarrito() {
 
         renglon.appendChild(botonBorrar);
         DOMcarrito.appendChild(renglon);
+
+        localStorage.setItem('carrito', JSON.stringify(carrito));    
     });
     DOMtotal.textContent =  '$' + calcularTotal();
 }
@@ -145,6 +128,7 @@ function calcularTotal() {
 
 function vaciarCarrito() {
     carrito = [];
+    localStorage.removeItem('carrito');
     dibujarCarrito();
 }
 
