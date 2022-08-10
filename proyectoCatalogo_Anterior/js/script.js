@@ -37,6 +37,7 @@ function dibujarProductos() {
 
         // foto
         const renglonFoto = document.createElement('img');
+        // renglonFoto.classList.add('img-flucodigo');
         renglonFoto.classList.add('img');
         renglonFoto.setAttribute('src', info.foto);
 
@@ -67,16 +68,46 @@ function dibujarProductos() {
 }
 
 function agregarArticuloAlCarrito(evento) {
-    carrito.push(evento.target.getAttribute('identificador'));
+    carrito.push(evento.target.getAttribute('identificador'))
     dibujarCarrito();
 }
 
+function dibujarCarrito() {
+    DOMcarrito.textContent = '';
+    //desafio clase 12:
+    const carritoFinal = [...new Set(carrito)];
 
-function restarArticuloAlCarrito(evento) {
-    carrito.splice(carrito.indexOf(evento.target.getAttribute('identificador')), 1) ;
-    dibujarCarrito();
+    carritoFinal.forEach((item) => {
+        const renglonCarrito = productosCatalogo.filter((productosCatalogo) => {
+            return productosCatalogo.codigo === item;
+        });
+
+        const numeroUnidadesItem = carrito.reduce((total, itemId) => {
+            //desafio clase 12
+            return itemId === item ? total += 1 : total;
+        }, 0);
+
+        const renglon = document.createElement('li');
+        renglon.classList.add('list-group-item','text-right');
+        
+        renglon.textContent = `${numeroUnidadesItem} x ${renglonCarrito[0].nombre} - ` + '$' + `${renglonCarrito[0].precio}`;
+
+        const botonBorrar = document.createElement('button');
+
+        botonBorrar.classList.add('btn', 'btn-danger');
+        botonBorrar.textContent = 'Borrar';
+        botonBorrar.style.marginLeft = '20px';
+        botonBorrar.dataset.item = item;
+
+        botonBorrar.addEventListener('click', borrarItemCarrito);
+
+        renglon.appendChild(botonBorrar);
+        DOMcarrito.appendChild(renglon);
+
+        localStorage.setItem('carrito', JSON.stringify(carrito));    
+    });
+    DOMtotal.textContent =  '$' + calcularTotal();
 }
-
 
 function borrarItemCarrito(evento) {
     const id = evento.target.dataset.item;
@@ -101,61 +132,6 @@ function vaciarCarrito() {
     localStorage.removeItem('carrito');
     dibujarCarrito();
 }
-
-function dibujarCarrito() {
-    DOMcarrito.textContent = '';
-    //desafio clase 12:
-    const carritoFinal = [...new Set(carrito)];
-
-    carritoFinal.forEach((item) => {
-        const renglonCarrito = productosCatalogo.filter((productosCatalogo) => {
-            return productosCatalogo.codigo === item;
-        });
-
-        const numeroUnidadesItem = carrito.reduce((total, itemId) => {
-            //desafio clase 12
-            return itemId === item ? total += 1 : total;
-        }, 0);
-
-        const renglon = document.createElement('li');
-        renglon.classList.add('list-group-item','text-right');
-        
-        renglon.textContent = `${numeroUnidadesItem} x ${renglonCarrito[0].nombre} - ` + '$' + `${renglonCarrito[0].precio}`;
-
-        const botonSumar = document.createElement('button');
-        botonSumar.classList.add('btn', 'btn-success');
-        botonSumar.textContent = '+';
-        botonSumar.style.marginLeft = '31px';
-        botonSumar.dataset.item = item;
-        botonSumar.setAttribute('identificador', item);
-        botonSumar.addEventListener('click', agregarArticuloAlCarrito);        
-        renglon.appendChild(botonSumar);
-
-        const botonRestar = document.createElement('button');
-        botonRestar.classList.add('btn', 'btn-warning');
-        botonRestar.textContent = '-';
-        botonRestar.style.marginLeft = '30px';
-        botonRestar.dataset.item = item;
-        botonRestar.setAttribute('identificador', item);
-        botonRestar.addEventListener('click', restarArticuloAlCarrito);
-        renglon.appendChild(botonRestar);
-
-        const botonBorrar = document.createElement('button');
-        botonBorrar.classList.add('btn', 'btn-danger');
-        botonBorrar.textContent = 'Borrar Renglon';
-        botonBorrar.style.marginLeft = '50px';
-        botonBorrar.dataset.item = item;
-        botonBorrar.addEventListener('click', borrarItemCarrito);
-        renglon.appendChild(botonBorrar);        
-
-        DOMcarrito.appendChild(renglon);
-
-        localStorage.setItem('carrito', JSON.stringify(carrito));    
-    });
-    DOMtotal.textContent =  '$' + calcularTotal();
-}
-
-
 
 // Eventos
 DOMbotonVaciar.addEventListener('click', vaciarCarrito);

@@ -7,7 +7,7 @@ const productosCatalogo = [
     },
     {
         codigo: '135H003',
-        nombre: 'Chevrolet C-10',
+        nombre: 'Chevrolet C-10 Pick Up',
         precio: 9491,
         foto: './images/135H003.png'
     },
