@@ -5,6 +5,25 @@ const DOMcarrito = document.querySelector('#carrito');
 const DOMtotal = document.querySelector('#total');
 const DOMbotonVaciar = document.querySelector('#boton-vaciar');
 
+const selectPro = document.querySelector('#busPro'),
+    selectMar = document.querySelector('#busMar'),
+    form = document.querySelector('#formulario'),
+    buscaProducto = document.querySelector('.inputPro'),
+    buscaMarca = document.querySelector('.inputMar'),
+    btnEnviar = document.querySelector('#btnEnviar'),    
+    rubros = ['Correas', 'Cintas de Freno', 'Bombas de Agua'],
+    marcas = ['Chevrolet', 'Peugeot', 'Toyota', 'Fiat', 'VW'];
+
+function cargarSelect(array, select) {
+    array.forEach(element => {
+        let option = `<option>${element}</option>`
+        select.innerHTML += option;
+    })
+}
+
+cargarSelect(rubros, selectPro);
+cargarSelect(marcas, selectMar);
+
 document.addEventListener("DOMContentLoaded", () => {
     if (localStorage.getItem('carrito')) {
         carrito = JSON.parse(localStorage.getItem('carrito'));
@@ -225,14 +244,11 @@ function calcularPrecioTotal(cantDias, precio) {
     return cantDias * precio * carrito.length;
 }
 
-
 btnCalcular.addEventListener('click',()=>{
     let fechaInicio = DateTime.fromISO(DateTime.now().toFormat('yyyy-MM-dd'));
     let fechaFin = DateTime.fromISO(document.getElementById('fechaEnvio').value);
     let cantDias = calcularDias(fechaInicio,fechaFin);
     let precioTotal = calcularPrecioTotal(cantDias, 500);
-    
-   
     
     let textoMensaje = '';
     if (carrito.length > 0) {
@@ -257,7 +273,21 @@ btnCalcular.addEventListener('click',()=>{
             backdrop: '#445566aa'
         })
     }
-});
+    
+    
+
+    // Swal.fire({
+    //     // text: `Su Pedido será enviado dentro de ${cantDias} días y tendrá un costo de $${precioTotal}`,
+    //     text: textoMensaje,
+    //     icon: 'info',
+    //     iconColor: 'rgb(139, 183, 197)',
+    //     confirmButtonText: 'Aceptar',
+    //     position: 'top-center',
+    //     backdrop: '#445566aa'
+    // })
+
+})
+
 
 
 // Eventos

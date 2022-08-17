@@ -18,6 +18,23 @@
 
     <main>
         <div class="container">
+            <form id="formulario">
+                <div class="flexbox">
+                    <div class="inputBox">
+                        <span>Filtro Producto</span>
+                        <select id="busPro" class="inputPro">
+                            <option value="busPro" selected disabled>Producto</option>    
+                        </select>
+                    </div>
+                    <div class="inputBox">
+                        <span>Filtro Marca</span>
+                        <select id="busMar" class="inputMar">
+                            <option value="busMar" selected disabled>Marca</option>                
+                        </select>
+                    </div>
+                </div>
+                <input type="submit" value="Buscar" class="submit-btn" id="btnEnviar">
+            </form>             
             <!-- div para los articulos -->
             <div class="row">
                 <main id="items" class="row">
@@ -31,7 +48,6 @@
                 <p class="text-right" id="total_abajo">Total: <span id="total"></span></p>
                 <button id="boton-vaciar" class="btn btn-danger">Vaciar Carrito</button>
             </section>
-            <!-- div para el calculo de envio -->
             <div class="d-flex justify-content-center p-3">
                 <p>El Costo de envio es GRATUITO si se despacha HOY</p>
                 <p>Si selecciona otra fecha el Costo de envio se calcula en base a la fecha de Entrega y a la cantidad de Articulos ($500 por Articulo)</p> 
@@ -49,7 +65,22 @@
     </main>
 
     <footer>
+        <!-- <div class="container">
+            <div class="d-flex justify-content-center p-3">
+                <p>El Costo de envio es GRATUITO si se despacha HOY</p>
+                <p>Si selecciona otra fecha el Costo de envio se calcula en base a la fecha de Entrega y a la cantidad de Articulos ($500 por Articulo)</p> 
+            </div>
+        </div>
 
+        <div class="container d-flex justify-content-center" id="fechas">
+            <div class="p-3">
+                <label for="fechaEnvio">Fecha Entrega:</label>
+                <input type="date" id="fechaEnvio" name="fechaEnvio" value="" min="" max="">
+            </div>
+            <div class="p-3">
+                <input type="button" class="btn btn-primary" value="Calcular Envio" id="calcular">
+            </div>
+        </div> -->
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
@@ -60,7 +91,8 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.26/dist/sweetalert2.all.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <script src="https://cdn.jsdelivr.net/npm/luxon@3.0.1/build/global/luxon.min.js"></script>
-    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cleave.js/1.6.0/cleave.min.js"></script>
+
     <script src="./js/productos.js"></script>
     <script src="./js/script.js"></script>
 </body>
