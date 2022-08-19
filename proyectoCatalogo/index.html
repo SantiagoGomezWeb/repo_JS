@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">    
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <link rel="stylesheet" href="./css/style.css">
     <title>Proyecto Catálogo</title>
@@ -16,15 +16,39 @@
         <h1>Catálogo de Productos</h1>
     </header>
 
+
     <main>
         <div class="container">
+            <!-- forma para el buscador -->
+            <form id="formulario">
+                <div class="flexbox">
+                    <div class="inputBox">
+                        <span>Filtro x Rubro</span>
+                        <select id="busPro" class="inputPro">
+                            <option value="busPro" selected disabled>Rubros</option>
+                        </select>
+                    </div>
+                    <div class="inputBox">
+                        <span>Filtro x Marca</span>
+                        <select id="busMar" class="inputMar">
+                            <option value="busMar" selected disabled>Marca</option>
+                        </select>
+                    </div>
+                </div>
+                <input type="submit" value="Buscar" class="submit-btn" id="btnEnviar">
+            </form>
             <!-- div para los articulos -->
             <div class="row">
                 <main id="items" class="row">
                 </main>
             </div>
+            <!-- div para los articulos "encontrados"-->
+            <div class="row row-cols-1 row-cols-md-3 g-4" id="contenedorTarjetas">
+
+            </div>
+
             <!-- div para el carrito -->
-            <section class="col-md-10 mx-auto my-auto d-block p-3"> 
+            <section class="col-md-10 mx-auto my-auto d-block p-3">
                 <h2>Tu Pedido</h2>
                 <ul id="carrito" class="list-group">
                 </ul>
@@ -34,9 +58,9 @@
             <!-- div para el calculo de envio -->
             <div class="d-flex justify-content-center p-3">
                 <p>El Costo de envio es GRATUITO si se despacha HOY</p>
-                <p>Si selecciona otra fecha el Costo de envio se calcula en base a la fecha de Entrega y a la cantidad de Articulos ($500 por Articulo)</p> 
-            </div> 
-            <div class="container d-flex justify-content-center" id="fechas">
+                <p>Si selecciona otra fecha el Costo de envio se calcula en base a la fecha de Entrega y a la cantidad de Articulos ($500 por Articulo)</p>
+            </div>
+            <div class="d-flex justify-content-center" id="fechas">
                 <div class="p-3">
                     <label for="fechaEnvio">Fecha Entrega:</label>
                     <input type="date" id="fechaEnvio" name="fechaEnvio" value="" min="" max="">
@@ -44,8 +68,8 @@
                 <div class="p-3">
                     <input type="button" class="btn btn-primary" value="Calcular Envio" id="calcular">
                 </div>
-            </div>                       
-        </div>        
+            </div>
+        </div>
     </main>
 
     <footer>
@@ -60,7 +84,8 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.26/dist/sweetalert2.all.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <script src="https://cdn.jsdelivr.net/npm/luxon@3.0.1/build/global/luxon.min.js"></script>
-    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cleave.js/1.6.0/cleave.min.js"></script>
+
     <script src="./js/productos.js"></script>
     <script src="./js/script.js"></script>
 </body>

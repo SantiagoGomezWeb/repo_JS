@@ -5,6 +5,28 @@ const DOMcarrito = document.querySelector('#carrito');
 const DOMtotal = document.querySelector('#total');
 const DOMbotonVaciar = document.querySelector('#boton-vaciar');
 
+const contenedor = document.querySelector('#contenedorTarjetas'),
+    selectPro = document.querySelector('#busPro'),
+    selectMar = document.querySelector('#busMar'),
+    form = document.querySelector('#formulario'),
+    buscaProducto = document.querySelector('.inputPro'),
+    buscaMarca = document.querySelector('.inputMar'),
+    btnEnviar = document.querySelector('#btnEnviar'),    
+    rubros = ['Correa', 'Cinta de Freno', 'Bomba de Agua', 'Cable de Embrague'],
+    marcas = ['Chevrolet', 'Peugeot', 'Toyota', 'Fiat', 'Renault'];
+
+    
+    function cargarSelect(array, select) {
+        array.forEach(element => {
+            let option = `<option>${element}</option>`
+            select.innerHTML += option;
+        })
+    }
+  
+
+    cargarSelect(rubros, selectPro);
+    cargarSelect(marcas, selectMar);    
+
 document.addEventListener("DOMContentLoaded", () => {
     if (localStorage.getItem('carrito')) {
         carrito = JSON.parse(localStorage.getItem('carrito'));
@@ -238,7 +260,6 @@ btnCalcular.addEventListener('click',()=>{
     if (carrito.length > 0) {
         cantDias > 0 ? textoMensaje = `Su Pedido será enviado dentro de ${cantDias} días y tendrá un costo de $${precioTotal}` : textoMensaje = `Su Pedido será enviado HOY sin COSTO`;            
         Swal.fire({
-            // text: `Su Pedido será enviado dentro de ${cantDias} días y tendrá un costo de $${precioTotal}`,
             text: textoMensaje,
             icon: 'info',
             iconColor: 'rgb(139, 183, 197)',
@@ -248,7 +269,6 @@ btnCalcular.addEventListener('click',()=>{
         })        
     }else{
         Swal.fire({
-            // text: `Su Pedido será enviado dentro de ${cantDias} días y tendrá un costo de $${precioTotal}`,
             text: 'Su Carrito está vacio',
             icon: 'info',
             iconColor: 'rgb(139, 183, 197)',
@@ -259,11 +279,57 @@ btnCalcular.addEventListener('click',()=>{
     }
 });
 
+function filtrarRubro(array) {
+    let rubro = buscaProducto.value;
+    if (!rubro) {
+        console.log(array);
+        return array;
+    } else {
+        console.log(array);
+        return array.filter((item) => item.rubroArticulo == rubro);
+    }
+}    
+
+
+async function buscarRubro() {
+    try{
+        const response = await fetch('./js/datos.json');
+        const data = await response.json();
+        // crearHTML(filtrarRubro(data));
+        alert(data.nombre);
+    } catch (e){
+        alert('mocazo');
+    }
+}
+
+btnEnviar.addEventListener('click', () => {
+    buscarRubro();
+})
+
+
+function crearHTML(array) {
+    contenedor.innerHTML = '';
+    array.forEach((producto) => {
+        const tarjeta = `
+            <div class="col">
+                <div class="card h-100">
+                    <img src="${producto.foto}" class="card-img-top" alt="${producto.codigo}">
+                    <div class="card-body">
+                        <h5 class="card-title">${producto.codigo}</h5>
+                        <p class="card-text">Descripcion: ${producto.nombre}</p>
+                        <p class="card-text">Marca: ${producto.marca}</p>
+                        <p class="card-text">Precio: ${producto.precio}</p>
+                    </div>
+                </div>
+            </div>`;
+        contenedor.innerHTML += tarjeta;
+    })
+}
+
 
 // Eventos
 DOMbotonVaciar.addEventListener('click', vaciarCarrito);
 
 // Inicio
-
 dibujarProductos();
 dibujarCarrito();

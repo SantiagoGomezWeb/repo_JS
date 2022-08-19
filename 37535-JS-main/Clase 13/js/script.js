@@ -103,7 +103,7 @@ window.onload=()=>{
     let fin = DateTime.now().plus({months:4}).toFormat('yyyy-MM-dd');
 
     dates.forEach(element=>{
-        element.setAttribute("  min", inicio);
+        element.setAttribute("min", inicio);
         element.setAttribute("max", fin);
     })
 }
