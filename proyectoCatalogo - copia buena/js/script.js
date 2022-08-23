@@ -1,25 +1,27 @@
 // Variables
 let carrito = [];
-const DOMitems = document.querySelector('#items');
-const DOMcarrito = document.querySelector('#carrito');
-const DOMtotal = document.querySelector('#total');
-const DOMbotonVaciar = document.querySelector('#boton-vaciar');
+const DOMitems = document.querySelector('#items'),
+      DOMcarrito = document.querySelector('#carrito'),
+      DOMtotal = document.querySelector('#total'),
+      DOMbotonVaciar = document.querySelector('#boton-vaciar');
+// let productosCatalogo;
 
-const selectPro = document.querySelector('#busPro'),
-    selectMar = document.querySelector('#busMar'),
-    form = document.querySelector('#formulario'),
+const contenedor = document.querySelector('#contenedorArticulos'),
+    selectPro = document.querySelector('#busPro'),
     buscaProducto = document.querySelector('.inputPro'),
-    buscaMarca = document.querySelector('.inputMar'),
-    btnEnviar = document.querySelector('#btnEnviar'),    
-    rubros = ['Correas', 'Cintas de Freno', 'Bombas de Agua'],
-    marcas = ['Chevrolet', 'Peugeot', 'Toyota', 'Fiat', 'VW'];
+    btnEnviar = document.querySelector('#buscar'),    
+    rubros = ['Correa', 'Cinta de Freno', 'Bomba de Agua', 'Embrague'];
 
+    
 function cargarSelect(array, select) {
     array.forEach(element => {
         let option = `<option>${element}</option>`
         select.innerHTML += option;
     })
 }
+
+cargarSelect(rubros, selectPro);
+
 
 document.addEventListener("DOMContentLoaded", () => {
     if (localStorage.getItem('carrito')) {
@@ -30,7 +32,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 // Funciones
-function dibujarProductos() {
+
+
+function dibujarProductosBusqueda(productosCatalogo) {
+    DOMitems.innerHTML = ''
     productosCatalogo.forEach((info) => {
         // div para la card
         const renglon = document.createElement('div');
@@ -55,6 +60,11 @@ function dibujarProductos() {
         renglonFoto.classList.add('img');
         renglonFoto.setAttribute('src', info.foto);
 
+        // Rubro
+        const renglonRubro = document.createElement('p');
+        renglonRubro.classList.add('card-text');
+        renglonRubro.textContent = 'Rubro: '+`${info.rubroArticulo}`;
+
         // Precio
         const renglonPrecio = document.createElement('p');
         renglonPrecio.classList.add('card-text');
@@ -72,6 +82,7 @@ function dibujarProductos() {
         tarjeta.appendChild(renglonFoto);
         tarjeta.appendChild(renglonTitulo);
         tarjeta.appendChild(renglonDescri);
+        tarjeta.appendChild(renglonRubro);
         tarjeta.appendChild(renglonPrecio);
         tarjeta.appendChild(BotonCard);
 
@@ -80,6 +91,7 @@ function dibujarProductos() {
         DOMitems.appendChild(renglon);
     });
 }
+
 
 function agregarArticuloAlCarrito(evento) {
     carrito.push(evento.target.getAttribute('identificador'));
@@ -166,6 +178,7 @@ function vaciarCarrito() {
 
 function dibujarCarrito() {
     DOMcarrito.textContent = '';
+    console.log(carrito);
     //desafio clase 12:
     const carritoFinal = [...new Set(carrito)];
 
@@ -214,7 +227,8 @@ function dibujarCarrito() {
 
         localStorage.setItem('carrito', JSON.stringify(carrito));    
     });
-    DOMtotal.textContent =  '$' + calcularTotal();
+    DOMtotal.textContent = '$' + calcularTotal();
+    // 'Cantidad de Productos: ' + carrito.length + '                                 ' +  ' Importe Total $' + calcularTotal();
 }
 
 const DateTime = luxon.DateTime;
@@ -241,17 +255,19 @@ function calcularPrecioTotal(cantDias, precio) {
     return cantDias * precio * carrito.length;
 }
 
+
 btnCalcular.addEventListener('click',()=>{
     let fechaInicio = DateTime.fromISO(DateTime.now().toFormat('yyyy-MM-dd'));
     let fechaFin = DateTime.fromISO(document.getElementById('fechaEnvio').value);
     let cantDias = calcularDias(fechaInicio,fechaFin);
     let precioTotal = calcularPrecioTotal(cantDias, 500);
     
+   
+    
     let textoMensaje = '';
     if (carrito.length > 0) {
         cantDias > 0 ? textoMensaje = `Su Pedido será enviado dentro de ${cantDias} días y tendrá un costo de $${precioTotal}` : textoMensaje = `Su Pedido será enviado HOY sin COSTO`;            
         Swal.fire({
-            // text: `Su Pedido será enviado dentro de ${cantDias} días y tendrá un costo de $${precioTotal}`,
             text: textoMensaje,
             icon: 'info',
             iconColor: 'rgb(139, 183, 197)',
@@ -261,7 +277,6 @@ btnCalcular.addEventListener('click',()=>{
         })        
     }else{
         Swal.fire({
-            // text: `Su Pedido será enviado dentro de ${cantDias} días y tendrá un costo de $${precioTotal}`,
             text: 'Su Carrito está vacio',
             icon: 'info',
             iconColor: 'rgb(139, 183, 197)',
@@ -270,28 +285,108 @@ btnCalcular.addEventListener('click',()=>{
             backdrop: '#445566aa'
         })
     }
-    
-    
+});
 
-    // Swal.fire({
-    //     // text: `Su Pedido será enviado dentro de ${cantDias} días y tendrá un costo de $${precioTotal}`,
-    //     text: textoMensaje,
-    //     icon: 'info',
-    //     iconColor: 'rgb(139, 183, 197)',
-    //     confirmButtonText: 'Aceptar',
-    //     position: 'top-center',
-    //     backdrop: '#445566aa'
-    // })
+function filtrarRubro(array) {
+    let rubro = buscaProducto.value;
+    if (!rubro || rubro == 'Todos' || rubro == 'busPro') {
+        return array;
+    } else {
+        return array.filter((item) => item.rubroArticulo == rubro);
+    }
+}    
 
+async function buscarRubro() {
+    try{
+        const response = await fetch('./js/datos.json');
+        const data = await response.json();
+        dibujarProductosBusqueda(filtrarRubro(data));
+    } catch (e){
+        alert('mocazo');
+    }
+}
+
+btnEnviar.addEventListener('click', () => {
+    buscarRubro();
 })
 
+
+// function crearHTML(array) {
+//     contenedor.innerHTML = '';
+//     array.forEach((producto) => {
+//         const tarjeta = `
+//             <div class="col">
+//                 <div class="card h-100">
+//                     <img src="${producto.foto}" class="card-img-top" alt="${producto.codigo}">
+//                     <div class="card-body">
+//                         <h5 class="card-title">${producto.codigo}</h5>
+//                         <p class="card-text">${producto.nombre}</p>
+//                         <p class="card-text">Marca: ${producto.marca}</p>
+//                         <p class="card-text">Rubro: ${producto.rubroArticulo}</p>
+//                         <p class="card-text">Precio: $${producto.precio}</p>
+//                     </div>
+//                 </div>
+//             </div>`;
+//         contenedor.innerHTML += tarjeta;
+//     })
+// }
+
+// function dibujarProductos() {
+//     productosCatalogo.forEach((info) => {
+//         // div para la card
+//         const renglon = document.createElement('div');
+//         renglon.classList.add('card');
+
+//         // cuerpo
+//         const tarjeta = document.createElement('div');
+//         tarjeta.classList.add('card-body');
+
+//         // Titulo - Codigo
+//         const renglonTitulo = document.createElement('h4');
+//         renglonTitulo.classList.add('card-title');
+//         renglonTitulo.textContent = info.codigo;
+
+//         // descri del Articulo
+//         const renglonDescri = document.createElement('h5');
+//         renglonDescri.classList.add('card-subtitle');
+//         renglonDescri.textContent = info.nombre;
+
+//         // foto
+//         const renglonFoto = document.createElement('img');
+//         renglonFoto.classList.add('img');
+//         renglonFoto.setAttribute('src', info.foto);
+
+//         // Precio
+//         const renglonPrecio = document.createElement('p');
+//         renglonPrecio.classList.add('card-text');
+//         renglonPrecio.textContent = '$'+`${info.precio}`;
+
+//         // Boton 
+//         const BotonCard = document.createElement('button');
+//         BotonCard.classList.add('btn', 'btn-primary');
+//         BotonCard.textContent = 'Comprar';
+
+//         BotonCard.setAttribute('identificador', info.codigo);
+//         BotonCard.addEventListener('click', agregarArticuloAlCarrito);
+
+
+//         tarjeta.appendChild(renglonFoto);
+//         tarjeta.appendChild(renglonTitulo);
+//         tarjeta.appendChild(renglonDescri);
+//         tarjeta.appendChild(renglonPrecio);
+//         tarjeta.appendChild(BotonCard);
+
+//         renglon.appendChild(tarjeta);
+//         //escribo en el DOM
+//         DOMitems.appendChild(renglon);
+//     });
+// }
 
 
 // Eventos
 DOMbotonVaciar.addEventListener('click', vaciarCarrito);
 
 // Inicio
-// cargarSelect(rubros, selectPro);
-// cargarSelect(marcas, selectMar);
 dibujarProductos();
+// buscarRubro();
 dibujarCarrito();

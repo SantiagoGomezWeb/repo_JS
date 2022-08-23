@@ -1,0 +1,34 @@
+[
+    {
+        "codigo": "135H002",
+        "nombre": "Toyota Corolla S-EG",
+        "precio": 1890,
+        "foto": "./images/135H002.png",
+        "marca": "Toyota",
+        "rubroArticulo": "Bomba de Agua"
+    },
+    {
+        "codigo": "135H003",
+        "nombre": "Chevrolet C-10",
+        "precio": 5800,
+        "foto": "./images/135H003.png",
+        "marca": "Chevrolet",
+        "rubroArticulo": "Bomba de Agua"
+    },
+    {
+        "codigo": "135H004",
+        "nombre": "Peugeot 206",
+        "precio": 2251,
+        "foto": "./images/135H004.png",
+        "marca": "Chevette",
+        "rubroArticulo": "Cable de Embrague"
+    },
+    {
+        "codigo": "135H010",
+        "nombre": "Renault Clio",
+        "precio": 110,
+        "foto": "./images/135H010.png",
+        "marca": "Renault",
+        "rubroArticulo": "Correa"
+    }
+]

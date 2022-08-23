@@ -1,0 +1,34 @@
+const productosCatalogo = [
+    {
+        codigo: '135H002',
+        nombre: 'Bomba C-10',
+        precio: 5800,
+        foto: './images/135H002.png',
+        marca: 'Chevrolet',
+        rubroArticulo: "Bomba de Agua"      
+    },
+    {
+        codigo: '201G080',
+        nombre: 'Conjunto Embrague',
+        precio: 2251,
+        foto: './images/201G080.png',
+        marca: 'Peugeot',
+        rubroArticulo: 'Embrague'        
+    },
+    {
+        codigo: '140L001',
+        nombre: 'Correa Clio',
+        precio: 110,
+        foto: './images/140L001.png',
+        marca: 'Renault',
+        rubroArticulo: 'Correa'        
+    },
+    {
+        codigo: '108M003',
+        nombre: 'Freno Clio',
+        precio: 1800,
+        foto: './images/108M003.png',
+        marca: 'Renault',
+        rubroArticulo: 'Cinta de Freno'        
+    }
+];

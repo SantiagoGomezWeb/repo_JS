@@ -1,43 +1,69 @@
 // Variables
 let carrito = [];
-const DOMitems = document.querySelector('#items');
-const DOMcarrito = document.querySelector('#carrito');
-const DOMtotal = document.querySelector('#total');
-const DOMbotonVaciar = document.querySelector('#boton-vaciar');
+let productosCatalogo= [];
 
-const contenedor = document.querySelector('#contenedorTarjetas'),
-    selectPro = document.querySelector('#busPro'),
-    selectMar = document.querySelector('#busMar'),
+const DOMitems = document.querySelector('#items'),
+      DOMcarrito = document.querySelector('#carrito'),
+      DOMtotal = document.querySelector('#total'),
+      DOMtotalUnidades = document.querySelector('#totalUnidades'),
+      DOMbotonVaciar = document.querySelector('#boton-vaciar');
+
+const selectPro = document.querySelector('#busPro'),
     form = document.querySelector('#formulario'),
     buscaProducto = document.querySelector('.inputPro'),
-    buscaMarca = document.querySelector('.inputMar'),
-    btnEnviar = document.querySelector('#btnEnviar'),    
-    rubros = ['Correa', 'Cinta de Freno', 'Bomba de Agua', 'Cable de Embrague'],
-    marcas = ['Chevrolet', 'Peugeot', 'Toyota', 'Fiat', 'Renault'];
-
+    btnEnviar = document.querySelector('#buscar'),    
+    rubros = ['Bomba de Agua', 'Embrague', 'Correa', 'Cinta de Freno'];
     
-    function cargarSelect(array, select) {
-        array.forEach(element => {
-            let option = `<option>${element}</option>`
-            select.innerHTML += option;
-        })
-    }
-  
 
-    cargarSelect(rubros, selectPro);
-    cargarSelect(marcas, selectMar);    
+function cargarSelect(array, select) {
+    array.forEach(element => {
+        let option = `<option>${element}</option>`
+        select.innerHTML += option;
+    })
+}
 
+//ayudame aqui Mati, porfa
 document.addEventListener("DOMContentLoaded", () => {
     if (localStorage.getItem('carrito')) {
         carrito = JSON.parse(localStorage.getItem('carrito'));
+        // muestro en consola el carrito guardado en el localstorage
+        console.log(carrito);
+        //aca me da error Cannot read properties of undefined (reading 'nombre')
         dibujarCarrito();
     }
   });
 
+  btnEnviar.addEventListener('click', () => {
+    buscarRubro();
+})
 
-// Funciones
-function dibujarProductos() {
-    productosCatalogo.forEach((info) => {
+
+  async function buscarRubro() {
+    try{
+        const response = await fetch('./js/datos.json');
+        const data = await response.json();
+        productosCatalogo = data;
+        dibujarProductosBusqueda(filtrarRubro(data));
+    } catch (e){
+        alert('mocazo');
+    }
+}
+
+
+function filtrarRubro(array) {
+    let rubro = buscaProducto.value;
+    if (!rubro || rubro == 'Todos' || rubro == 'busPro') {
+        return array;
+    } else {
+        return array.filter((item) => item.rubroArticulo == rubro);
+    }
+} 
+
+
+
+function dibujarProductosBusqueda(array) {
+    DOMitems.innerHTML = ''
+    array.forEach((info) => {
         // div para la card
         const renglon = document.createElement('div');
         renglon.classList.add('card');
@@ -61,6 +87,11 @@ function dibujarProductos() {
         renglonFoto.classList.add('img');
         renglonFoto.setAttribute('src', info.foto);
 
+        // Rubro
+        const renglonRubro = document.createElement('p');
+        renglonRubro.classList.add('card-text');
+        renglonRubro.textContent = 'Rubro: '+`${info.rubroArticulo}`;
+
         // Precio
         const renglonPrecio = document.createElement('p');
         renglonPrecio.classList.add('card-text');
@@ -78,6 +109,7 @@ function dibujarProductos() {
         tarjeta.appendChild(renglonFoto);
         tarjeta.appendChild(renglonTitulo);
         tarjeta.appendChild(renglonDescri);
+        tarjeta.appendChild(renglonRubro);
         tarjeta.appendChild(renglonPrecio);
         tarjeta.appendChild(BotonCard);
 
@@ -86,6 +118,7 @@ function dibujarProductos() {
         DOMitems.appendChild(renglon);
     });
 }
+
 
 function agregarArticuloAlCarrito(evento) {
     carrito.push(evento.target.getAttribute('identificador'));
@@ -150,6 +183,17 @@ function calcularTotal() {
         return total 
     }, 0).toFixed();
 }
+
+function calcularTotalUnidades() {
+    return carrito.reduce((total, item) => {
+        const renglonCarrito = productosCatalogo.filter((productosCatalogo) => {
+            return productosCatalogo.codigo === item;
+        });
+        totalUnidades = totalUnidades + 1;
+        return totalUnidades 
+    }, 0).toFixed();
+}
+
 
 function vaciarCarrito() {
     Swal.fire({
@@ -221,8 +265,10 @@ function dibujarCarrito() {
         localStorage.setItem('carrito', JSON.stringify(carrito));    
     });
     DOMtotal.textContent =  '$' + calcularTotal();
+    DOMtotalUnidades.textContent = 'Cantidad Unidades: ' + carrito.length;
 }
 
+// uso la libreria luxon para calcular el costo de envio
 const DateTime = luxon.DateTime;
 const btnCalcular = document.getElementById('calcular');
 
@@ -247,16 +293,14 @@ function calcularPrecioTotal(cantDias, precio) {
     return cantDias * precio * carrito.length;
 }
 
-
 btnCalcular.addEventListener('click',()=>{
     let fechaInicio = DateTime.fromISO(DateTime.now().toFormat('yyyy-MM-dd'));
     let fechaFin = DateTime.fromISO(document.getElementById('fechaEnvio').value);
     let cantDias = calcularDias(fechaInicio,fechaFin);
     let precioTotal = calcularPrecioTotal(cantDias, 500);
-    
-   
-    
-    let textoMensaje = '';
+        let textoMensaje = '';
+
+    // uso la libreria sweetalert para mostrar mensajitos facheros
     if (carrito.length > 0) {
         cantDias > 0 ? textoMensaje = `Su Pedido será enviado dentro de ${cantDias} días y tendrá un costo de $${precioTotal}` : textoMensaje = `Su Pedido será enviado HOY sin COSTO`;            
         Swal.fire({
@@ -277,59 +321,13 @@ btnCalcular.addEventListener('click',()=>{
             backdrop: '#445566aa'
         })
     }
-});
-
-function filtrarRubro(array) {
-    let rubro = buscaProducto.value;
-    if (!rubro) {
-        console.log(array);
-        return array;
-    } else {
-        console.log(array);
-        return array.filter((item) => item.rubroArticulo == rubro);
-    }
-}    
-
-
-async function buscarRubro() {
-    try{
-        const response = await fetch('./js/datos.json');
-        const data = await response.json();
-        // crearHTML(filtrarRubro(data));
-        alert(data.nombre);
-    } catch (e){
-        alert('mocazo');
-    }
-}
-
-btnEnviar.addEventListener('click', () => {
-    buscarRubro();
 })
-
-
-function crearHTML(array) {
-    contenedor.innerHTML = '';
-    array.forEach((producto) => {
-        const tarjeta = `
-            <div class="col">
-                <div class="card h-100">
-                    <img src="${producto.foto}" class="card-img-top" alt="${producto.codigo}">
-                    <div class="card-body">
-                        <h5 class="card-title">${producto.codigo}</h5>
-                        <p class="card-text">Descripcion: ${producto.nombre}</p>
-                        <p class="card-text">Marca: ${producto.marca}</p>
-                        <p class="card-text">Precio: ${producto.precio}</p>
-                    </div>
-                </div>
-            </div>`;
-        contenedor.innerHTML += tarjeta;
-    })
-}
-
 
 // Eventos
 DOMbotonVaciar.addEventListener('click', vaciarCarrito);
 
 // Inicio
-dibujarProductos();
+cargarSelect(rubros, selectPro);
+buscarRubro();
 dibujarCarrito();
+
