@@ -35,6 +35,24 @@ h2{
     font-style: italic;
 }
 
+.busqueda{
+    background-color: rgb(139, 183, 197);
+    font-size: 20px;
+    font-weight: 700;
+    font-family: "Roboto", sans-serif;
+    /* text-align: center; */
+    font-style: italic;
+}
+
+.envio{
+    background-color: rgb(139, 183, 197);
+    font-size: 20px;
+    font-weight: 500;
+    font-family: "Roboto", sans-serif;
+    /* text-align: center; */
+    /* font-style: italic; */
+}
+
 li{
     font-size: 20px;
     font-weight: 500;
@@ -42,7 +60,7 @@ li{
     text-align: center;
 }
 
-.container{
+/* .container{
     min-height: 70vh;
     background: #bbb;
     display: flex;
@@ -104,4 +122,4 @@ li{
 .container form .submit-btn:hover{
     letter-spacing: 1px;
     opacity: .8;
-}
+} */

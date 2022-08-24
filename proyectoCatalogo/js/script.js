@@ -9,34 +9,38 @@ const DOMitems = document.querySelector('#items'),
       DOMbotonVaciar = document.querySelector('#boton-vaciar');
 
 const selectPro = document.querySelector('#busPro'),
-    form = document.querySelector('#formulario'),
     buscaProducto = document.querySelector('.inputPro'),
-    btnEnviar = document.querySelector('#buscar'),    
+    selectMar = document.querySelector('#busMar'),
+    buscaMarca = document.querySelector('.inputMar'),
+    DOMbtnEnviar = document.querySelector('#buscar'),    
     rubros = ['Bomba de Agua', 'Embrague', 'Correa', 'Cinta de Freno'];
-    
+    // marcas = ['Fiat', 'Chevrolet', 'Peugeot', 'Renault'];
 
-function cargarSelect(array, select) {
-    array.forEach(element => {
-        let option = `<option>${element}</option>`
-        select.innerHTML += option;
+    // uso la libreria luxon para calcular el costo de envio
+const DateTime = luxon.DateTime;
+const DOMbtnCalcular = document.getElementById('calcular');
+
+window.onload=()=>{
+    let fechas = document.querySelectorAll('input[type="date"]');
+    let fecIni = DateTime.now().toFormat('yyyy-MM-dd');
+    let fecFin = DateTime.now().plus({months:1}).toFormat('yyyy-MM-dd');
+
+    fechas.forEach(element=>{
+        element.setAttribute("min", fecIni);
+        element.setAttribute("max", fecFin);
+        element.setAttribute("value", fecIni);
     })
 }
 
-//ayudame aqui Mati, porfa
+
+
 document.addEventListener("DOMContentLoaded", () => {
+    buscarRubro();
     if (localStorage.getItem('carrito')) {
         carrito = JSON.parse(localStorage.getItem('carrito'));
-        // muestro en consola el carrito guardado en el localstorage
-        console.log(carrito);
-        //aca me da error Cannot read properties of undefined (reading 'nombre')
         dibujarCarrito();
     }
   });
-
-  btnEnviar.addEventListener('click', () => {
-    buscarRubro();
-})
-
 
   async function buscarRubro() {
     try{
@@ -44,6 +48,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const data = await response.json();
         productosCatalogo = data;
         dibujarProductosBusqueda(filtrarRubro(data));
+        dibujarCarrito();
     } catch (e){
         alert('mocazo');
     }
@@ -53,12 +58,29 @@ document.addEventListener("DOMContentLoaded", () => {
 function filtrarRubro(array) {
     let rubro = buscaProducto.value;
     if (!rubro || rubro == 'Todos' || rubro == 'busPro') {
-        return array;
-    } else {
-        return array.filter((item) => item.rubroArticulo == rubro);
-    }
+            return array;
+        } else {
+            return array.filter((item) => item.rubroArticulo == rubro);
+        }
 } 
 
+
+function filtrarMarca(array) {
+    let marca = buscaMarca.value;
+    if (!marca || marca == 'Todos' || marca == 'busMar') {
+            return array;
+        } else {
+            return array.filter((item) => item.marca == marca);
+        }
+} 
+
+
+function cargarSelect(array, select) {
+    array.forEach(element => {
+        let option = `<option>${element}</option>`
+        select.innerHTML += option;
+    })
+}
 
 
 function dibujarProductosBusqueda(array) {
@@ -92,6 +114,11 @@ function dibujarProductosBusqueda(array) {
         renglonRubro.classList.add('card-text');
         renglonRubro.textContent = 'Rubro: '+`${info.rubroArticulo}`;
 
+        // // Marca
+        // const renglonMarca = document.createElement('p');
+        // renglonMarca.classList.add('card-text');
+        // renglonMarca.textContent = 'Rubro: '+`${info.marca}`;
+
         // Precio
         const renglonPrecio = document.createElement('p');
         renglonPrecio.classList.add('card-text');
@@ -110,6 +137,7 @@ function dibujarProductosBusqueda(array) {
         tarjeta.appendChild(renglonTitulo);
         tarjeta.appendChild(renglonDescri);
         tarjeta.appendChild(renglonRubro);
+        // tarjeta.appendChild(renglonMarca);
         tarjeta.appendChild(renglonPrecio);
         tarjeta.appendChild(BotonCard);
 
@@ -200,7 +228,7 @@ function vaciarCarrito() {
         title: 'Vaciar Carrito',
         text: '¿Está seguro de Vaciar el carrito?',
         icon: 'warning',
-        showCancelButton: true,
+        showCancelBukimonotton: true,
         confirmButtonText: 'Sí, seguro',
         cancelButtonText: 'No, no quiero',
         backdrop: '#66f4aebb'
@@ -216,6 +244,7 @@ function vaciarCarrito() {
 
 function dibujarCarrito() {
     DOMcarrito.textContent = '';
+    console.log(carrito);
     //desafio clase 12:
     const carritoFinal = [...new Set(carrito)];
 
@@ -268,22 +297,6 @@ function dibujarCarrito() {
     DOMtotalUnidades.textContent = 'Cantidad Unidades: ' + carrito.length;
 }
 
-// uso la libreria luxon para calcular el costo de envio
-const DateTime = luxon.DateTime;
-const btnCalcular = document.getElementById('calcular');
-
-window.onload=()=>{
-    let fechas =document.querySelectorAll('input[type="date"]');
-    let fecIni=DateTime.now().toFormat('yyyy-MM-dd');
-    let fecFin = DateTime.now().plus({months:1}).toFormat('yyyy-MM-dd');
-
-    fechas.forEach(element=>{
-        element.setAttribute("min", fecIni);
-        element.setAttribute("max", fecFin);
-    })
-}
-
-
 function calcularDias(fechaIni,fechaFin){
     let total =fechaFin.diff(fechaIni);
     return total.as('days');
@@ -293,13 +306,15 @@ function calcularPrecioTotal(cantDias, precio) {
     return cantDias * precio * carrito.length;
 }
 
-btnCalcular.addEventListener('click',()=>{
+
+// Eventos
+DOMbotonVaciar.addEventListener('click', vaciarCarrito);
+DOMbtnCalcular.addEventListener('click',()=>{
     let fechaInicio = DateTime.fromISO(DateTime.now().toFormat('yyyy-MM-dd'));
     let fechaFin = DateTime.fromISO(document.getElementById('fechaEnvio').value);
     let cantDias = calcularDias(fechaInicio,fechaFin);
     let precioTotal = calcularPrecioTotal(cantDias, 500);
         let textoMensaje = '';
-
     // uso la libreria sweetalert para mostrar mensajitos facheros
     if (carrito.length > 0) {
         cantDias > 0 ? textoMensaje = `Su Pedido será enviado dentro de ${cantDias} días y tendrá un costo de $${precioTotal}` : textoMensaje = `Su Pedido será enviado HOY sin COSTO`;            
@@ -323,11 +338,13 @@ btnCalcular.addEventListener('click',()=>{
     }
 })
 
-// Eventos
-DOMbotonVaciar.addEventListener('click', vaciarCarrito);
+DOMbtnEnviar.addEventListener('click', () => {
+    buscarRubro();
+})
 
 // Inicio
 cargarSelect(rubros, selectPro);
+// cargarSelect(marcas, selectMar);
 buscarRubro();
 dibujarCarrito();
 

@@ -8,6 +8,13 @@
         "rubroArticulo": "Bomba de Agua"
     },
     {
+        "codigo": "397G002",
+        "nombre": "Bomba GMB",
+        "precio": 1450,
+        "foto": "./images/397G002.png",
+        "marca": "Fiat",
+        "rubroArticulo": "Bomba de Agua"
+    },    {
         "codigo": "201G080",
         "nombre": "Conjunto Embrague",
         "precio": 2251,
@@ -15,6 +22,14 @@
         "marca": "Peugeot",
         "rubroArticulo": "Embrague"
     },
+    {
+        "codigo": "340H017",
+        "nombre": "Embrague Valeo",
+        "precio": 4000,
+        "foto": "./images/340h017.png",
+        "marca": "Fiat",
+        "rubroArticulo": "Embrague"
+    },    
     {
         "codigo": "140L001",
         "nombre": "Correa Clio",
@@ -24,11 +39,27 @@
         "rubroArticulo": "Correa"
     },
     {
+        "codigo": "450V248",
+        "nombre": "Correa Dayco",
+        "precio": 2400,
+        "foto": "./images/450V248.png",
+        "marca": "Renault",
+        "rubroArticulo": "Correa"
+    },    
+    {
         "codigo": "108M003",
         "nombre": "Freno Clio",
         "precio": 1800,
         "foto": "./images/108M003.png",
         "marca": "Renault",
         "rubroArticulo": "Cinta de Freno"
-    }
+    },
+    {
+        "codigo": "059H037",
+        "nombre": "Campana de Freno",
+        "precio": 5600,
+        "foto": "./images/059H037.png",
+        "marca": "Chevrolet",
+        "rubroArticulo": "Cinta de Freno"
+    }    
 ]

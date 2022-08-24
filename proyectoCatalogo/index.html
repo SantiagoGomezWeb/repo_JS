@@ -12,27 +12,78 @@
 
 
 <body>
-    <header>
-        <h1>Catálogo de Productos</h1>
-    </header>
+    <header class="container-fluid">
+        <section class="row"> 
+            <div class="col-md-12">         
+                <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                    <div class="container-fluid">
+                        <a class="navbar-brand" href="index.html"><img src="./images/logo.png" alt="Autocor"></a>
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="index.html">Inicio</a>
+                                </li>                                
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Catalogo</a>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Representaciones
+                                    </a>
+                                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                        <li><a class="dropdown-item" href="#">Frenos</a></li>
+                                        <li><a class="dropdown-item" href="#">Embrague</a></li>
+                                        <li><hr class="dropdown-divider"></li>
+                                        <li><a class="dropdown-item" href="#">Agua</a></li>
+                                    </ul>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">Contacto</a>
+                                </li>
+                            </ul>
+                            <button type="button" class="btn btn-success d-table my-5 mx-auto" data-bs-toggle="modal" data-bs-target="#ModalForm">
+                            Ingreso de Usuarios
+                            </button>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        </section>                
+    </header>        
 
     <main>
         <div class="container">
             <div class="row">
-                <div class="col-md-12 d-flex mx-auto my-auto p-3">
+                <!-- div para el filtro por rubros -->
+                <div class="col-md-12 p-3 busqueda">
                     <div class="seleccion">
                             <span>Filtro x Rubro</span>
                             <select id="busPro" class="inputPro">
                                 <option value="busPro">Rubros</option>
                             </select>
-                        <button type="button" class="btn btn-primary" id="buscar">Buscar</button>
+                            <button type="button" class="btn btn-success" id="buscar">Buscar</button>
                     </div>
                 </div>
+                <!-- div para el filtro por marcas -->
+                <!-- <div class="col-md-6 p-3 busqueda">
+                    <div class="seleccion">
+                            <span>Filtro x Marca</span>
+                            <select id="busMar" class="inputMar">
+                                <option value="busMar">Marcas</option>
+                            </select>
+                            <button type="button" class="btn btn-success" id="buscar">Buscar</button>
+                    </div>
+                </div> -->
             </div>            
             <!-- div para los articulos -->
             <div class="row">
-                <main id="items" class="row">
-                </main>
+                <div class="col-md-12 p-3">
+                    <main id="items" class="row">
+                    </main>
+                </div>
             </div>
             <!-- div para el carrito -->
             <section class="col-md-12 mx-auto my-auto d-block p-3"> 
@@ -41,27 +92,27 @@
                 </ul>
                 <div class="row">
                     <div class="col-md-6 justify-content-center">
-                        <p class="text-right" id="totalUnidades">Cantidad Total: <span id="totalUnidades"></span></p>
+                        <p class="text-center" id="totalUnidades">Cantidad Total: <span id="totalUnidades"></span></p>
                     </div>
                     <div class="col-md-6 justify-content-center">
-                        <p class="text-right" id="total_abajo">Importe Total: <span id="total"></span></p>                        
+                        <p class="text-center" id="total_abajo">Importe Total: <span id="total"></span></p>                        
                     </div>
                 </div>
                 <button id="boton-vaciar" class="btn btn-danger">Vaciar Carrito</button>
             </section>
+            <!-- div para el envio -->
             <div class="row">
-                <!-- <div class="d-flex justify-content-center p-3"> -->
-                <div class="col-md-6">
+                <div class="col-md-8 p-3 mx-auto envio">
                     <p>El Costo de envio es GRATUITO si se despacha HOY</p>
                     <p>Si selecciona otra fecha el Costo de envio se calcula en base a la fecha de Entrega y a la cantidad de Articulos ($500 por Articulo)</p> 
                 </div> 
-                <div class="col-md-6" id="fechas">
+                <div class="col-md-4 p-3 mx-auto envio" id="fechas">
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-6 p-3 mx-auto envio">
                             <label for="fechaEnvio">Fecha Entrega:</label>
                             <input type="date" id="fechaEnvio" name="fechaEnvio" value="" min="" max="">
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-6 p-3 mx-auto my-auto envio">
                             <input type="button" class="btn btn-primary" value="Calcular Envio" id="calcular">
                         </div>
                     </div>
@@ -83,7 +134,6 @@
     <script src="https://cdn.jsdelivr.net/npm/luxon@3.0.1/build/global/luxon.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cleave.js/1.6.0/cleave.min.js"></script>
 
-    <!-- <script src="./js/productos.js"></script> -->
     <script src="./js/script.js"></script>
 </body>
 
