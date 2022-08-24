@@ -306,6 +306,39 @@ function calcularPrecioTotal(cantDias, precio) {
     return cantDias * precio * carrito.length;
 }
 
+// API para mandar mail formspree
+let DOMform = document.getElementById("formMail");
+            
+async function handleSubmit(event) {
+    event.preventDefault();
+    let mensaje = document.getElementById("formMail-mensaje");
+    let data = new FormData(event.target);
+    fetch(event.target.action, {
+    method: DOMform.method,
+    body: data,
+    headers: {
+        'Accept': 'application/json'
+    }
+    }).then(response => {
+    if (response.ok) {
+        mensaje.innerHTML = "Gracias por tu mensaje!";
+        DOMform.reset()
+    } else {
+        response.json().then(data => {
+        if (Object.hasOwn(data, 'errors')) {
+            mensaje.innerHTML = data["errors"].map(error => error["message"]).join(", ")
+        } else {
+            mensaje.innerHTML = "Oops! Algo salió mal en el envio del mail"
+        }
+        })
+    }
+    }).catch(error => {
+    mensaje.innerHTML = "Oops! Algo salió mal en el envio del mail"
+    });
+}
+DOMform.addEventListener("submit", handleSubmit)
+
+
 
 // Eventos
 DOMbotonVaciar.addEventListener('click', vaciarCarrito);

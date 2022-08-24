@@ -44,9 +44,9 @@
                                     <a class="nav-link" href="#">Contacto</a>
                                 </li>
                             </ul>
-                            <button type="button" class="btn btn-success d-table my-5 mx-auto" data-bs-toggle="modal" data-bs-target="#ModalForm">
+                            <!-- <button type="button" class="btn btn-success d-table my-5 mx-auto" data-bs-toggle="modal" data-bs-target="#ModalForm">
                             Ingreso de Usuarios
-                            </button>
+                            </button> -->
                         </div>
                     </div>
                 </nav>
@@ -116,8 +116,21 @@
                             <input type="button" class="btn btn-primary" value="Calcular Envio" id="calcular">
                         </div>
                     </div>
-                </div>                       
+                </div>  
             </div>
+            <div class="row">
+                <div class="col-md-12 p-4 my-auto contacto">
+                    <form id="formMail" action="https://formspree.io/f/mnqrnvay" method="POST">
+                        <label>Email:</label>
+                        <input type="email" name="email" size="30"/>
+                        <label>Mensaje:</label>
+                        <input type="text" name="message" size="50"/>
+                        <button id="formMail-boton" class="btn btn-primary">Enviar</button>
+                        <p id="formMail-mensaje" class="mensajeEstado"></p>
+                    </form>
+                </div>
+            </div>
+
         </div>        
     </main>
 
@@ -133,6 +146,7 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <script src="https://cdn.jsdelivr.net/npm/luxon@3.0.1/build/global/luxon.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cleave.js/1.6.0/cleave.min.js"></script>
+    <script src="https://smtpjs.com/v3/smtp.js"></script>
 
     <script src="./js/script.js"></script>
 </body>
