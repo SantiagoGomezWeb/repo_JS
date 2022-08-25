@@ -9,14 +9,13 @@ const DOMitems = document.querySelector('#items'),
       DOMbotonVaciar = document.querySelector('#boton-vaciar');
 
 const selectPro = document.querySelector('#busPro'),
-    buscaProducto = document.querySelector('.inputPro'),
-    selectMar = document.querySelector('#busMar'),
-    buscaMarca = document.querySelector('.inputMar'),
-    DOMbtnEnviar = document.querySelector('#buscar'),    
-    rubros = ['Bomba de Agua', 'Embrague', 'Correa', 'Cinta de Freno'];
-    // marcas = ['Fiat', 'Chevrolet', 'Peugeot', 'Renault'];
+      buscaProducto = document.querySelector('.inputPro'),
+      selectMar = document.querySelector('#busMar'),
+      buscaMarca = document.querySelector('.inputMar'),
+      DOMbtnEnviar = document.querySelector('#buscar'),    
+      rubros = ['Bomba de Agua', 'Embrague', 'Correa', 'Cinta de Freno'];
 
-    // uso la libreria luxon para calcular el costo de envio
+// uso la libreria luxon para calcular el costo de envio
 const DateTime = luxon.DateTime;
 const DOMbtnCalcular = document.getElementById('calcular');
 
@@ -32,14 +31,11 @@ window.onload=()=>{
     })
 }
 
-
-
 document.addEventListener("DOMContentLoaded", () => {
-    buscarRubro();
     if (localStorage.getItem('carrito')) {
         carrito = JSON.parse(localStorage.getItem('carrito'));
-        dibujarCarrito();
     }
+    buscarRubro();
   });
 
   async function buscarRubro() {
@@ -50,10 +46,9 @@ document.addEventListener("DOMContentLoaded", () => {
         dibujarProductosBusqueda(filtrarRubro(data));
         dibujarCarrito();
     } catch (e){
-        alert('mocazo');
+        alert('Oops! Algo salió mal');
     }
 }
-
 
 function filtrarRubro(array) {
     let rubro = buscaProducto.value;
@@ -63,7 +58,6 @@ function filtrarRubro(array) {
             return array.filter((item) => item.rubroArticulo == rubro);
         }
 } 
-
 
 function filtrarMarca(array) {
     let marca = buscaMarca.value;
@@ -114,11 +108,6 @@ function dibujarProductosBusqueda(array) {
         renglonRubro.classList.add('card-text');
         renglonRubro.textContent = 'Rubro: '+`${info.rubroArticulo}`;
 
-        // // Marca
-        // const renglonMarca = document.createElement('p');
-        // renglonMarca.classList.add('card-text');
-        // renglonMarca.textContent = 'Rubro: '+`${info.marca}`;
-
         // Precio
         const renglonPrecio = document.createElement('p');
         renglonPrecio.classList.add('card-text');
@@ -131,7 +120,6 @@ function dibujarProductosBusqueda(array) {
 
         BotonCard.setAttribute('identificador', info.codigo);
         BotonCard.addEventListener('click', agregarArticuloAlCarrito);
-
 
         tarjeta.appendChild(renglonFoto);
         tarjeta.appendChild(renglonTitulo);
@@ -147,7 +135,6 @@ function dibujarProductosBusqueda(array) {
     });
 }
 
-
 function agregarArticuloAlCarrito(evento) {
     carrito.push(evento.target.getAttribute('identificador'));
     Toastify({
@@ -161,9 +148,7 @@ function agregarArticuloAlCarrito(evento) {
         }
     ).showToast();
     dibujarCarrito();
-
 }
-
 
 function restarArticuloAlCarrito(evento) {
     carrito.splice(carrito.indexOf(evento.target.getAttribute('identificador')), 1) ;
@@ -179,7 +164,6 @@ function restarArticuloAlCarrito(evento) {
     ).showToast();    
     dibujarCarrito();
 }
-
 
 function borrarItemCarrito(evento) {
     Swal.fire({
@@ -245,7 +229,6 @@ function vaciarCarrito() {
 function dibujarCarrito() {
     DOMcarrito.textContent = '';
     console.log(carrito);
-    //desafio clase 12:
     const carritoFinal = [...new Set(carrito)];
 
     carritoFinal.forEach((item) => {
@@ -254,7 +237,6 @@ function dibujarCarrito() {
         });
 
         const numeroUnidadesItem = carrito.reduce((total, itemId) => {
-            //desafio clase 12
             return itemId === item ? total += 1 : total;
         }, 0);
 
@@ -306,7 +288,7 @@ function calcularPrecioTotal(cantDias, precio) {
     return cantDias * precio * carrito.length;
 }
 
-// API para mandar mail formspree
+// API para mandar mail https://formspree.io/
 let DOMform = document.getElementById("formMail");
             
 async function handleSubmit(event) {
@@ -337,8 +319,6 @@ async function handleSubmit(event) {
     });
 }
 DOMform.addEventListener("submit", handleSubmit)
-
-
 
 // Eventos
 DOMbotonVaciar.addEventListener('click', vaciarCarrito);
@@ -377,7 +357,6 @@ DOMbtnEnviar.addEventListener('click', () => {
 
 // Inicio
 cargarSelect(rubros, selectPro);
-// cargarSelect(marcas, selectMar);
 buscarRubro();
 dibujarCarrito();
 
